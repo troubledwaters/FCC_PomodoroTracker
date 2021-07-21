@@ -1,4 +1,65 @@
+@font-face {
+  font-family: "CutiveMono";
+  src: url("fonts/CutiveMono-Regular.ttf") format("opentype"); }
+
+* {
+  margin: 0;
+  padding: 0; }
+
+body {
+  font-size: 16px;
+  font-family: "CutiveMono", sans-serif;
+  font-weight: 500; }
+
+.main__container {
+  background-image: url("img/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  padding: 1rem; }
+
+.label {
+  font-size: 1.5rem;
+  color: #000000;
+  background-color: rgba(255, 255, 255, 0.3);
+  text-align: center; }
+
+.settings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 3rem;
+  background-color: rgba(255, 255, 255, 0.3); }
+
+.main-btn {
+  width: 2rem;
+  height: 2rem;
+  background-color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.settings__time {
+  font-size: 1.5rem; }
+
+.break-label__row {
+  margin-top: 1rem; }
+
+.main-time__col {
+  background-color: rgba(255, 255, 255, 0.3);
+  font-weight: 900;
+  font-size: 5rem;
+  margin-top: 1rem;
+  padding: 1rem 0 1rem 0;
+  text-align: center; }
+
+.play-btns__col {
+  background-color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 1rem; }
+
 h1 {
-  color: green;
+  color: white;
   font-size: 12px;
   font-family: Arial, Helvetica, sans-serif; }
