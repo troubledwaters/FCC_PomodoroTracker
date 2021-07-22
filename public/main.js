@@ -203,14 +203,14 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/React.createElement("i", {
         "class": "fas fa-minus"
       })))), /*#__PURE__*/React.createElement("div", {
-        "class": "row main-time__row justify-content-xl-center"
+        "class": "row main-time__row justify-content-center"
       }, /*#__PURE__*/React.createElement("div", {
-        "class": "col-xl-4 main-time__col",
+        "class": "col-xl-4 col-lg-4 col-md-6 col-12 main-time__col",
         onClick: this.decreaseSession
       }, this.state.runningTime)), /*#__PURE__*/React.createElement("div", {
-        "class": "row play-btns__row justify-content-xl-center"
+        "class": "row play-btns__row justify-content-center"
       }, /*#__PURE__*/React.createElement("div", {
-        "class": "col-xl-4 play-btns__col"
+        "class": "col-xl-4 col-lg-4 col-md-6 col-12  play-btns__col"
       }, /*#__PURE__*/React.createElement("div", {
         "class": "play-btns__play main-btn"
       }, /*#__PURE__*/React.createElement("i", {

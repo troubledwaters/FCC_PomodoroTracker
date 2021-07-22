@@ -129,7 +129,6 @@ class Tracker extends React.Component {
                             <i class="fas fa-minus"></i>
                         </div>
                     </div>
-
                 </div>
                 <div class="row break-label__row">
                     <div class="col-3 label" id="break-label">Break Length</div>
@@ -147,13 +146,13 @@ class Tracker extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div class="row main-time__row justify-content-xl-center">
-                    <div class="col-xl-4 main-time__col" onClick={this.decreaseSession}>
+                <div class="row main-time__row justify-content-center">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-12 main-time__col" onClick={this.decreaseSession}>
                         {this.state.runningTime}
                     </div>
                 </div>
-                <div class="row play-btns__row justify-content-xl-center">
-                    <div class="col-xl-4 play-btns__col">
+                <div class="row play-btns__row justify-content-center">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-12  play-btns__col">
                         <div class="play-btns__play main-btn">
                             <i class="fas fa-play"></i>
                         </div>
