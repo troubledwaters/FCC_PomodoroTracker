@@ -10,13 +10,6 @@ body {
 
 }
 
-// .row {
-//     border: 3px solid white
-// }
-
-// [class^="col"] {
-//     border: 3px solid gold
-// }
 
 .main__container {
     background-image: url("img/bg.jpg");
@@ -78,4 +71,8 @@ h1 {
     color: white;
     font-size: 12px;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.disablebtn{
+    pointer-events: none;
 }

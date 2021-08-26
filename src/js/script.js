@@ -2,9 +2,9 @@ class Tracker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sessionLength: 10,
-            breakLength: 5,
-            runningTime: 10,
+            sessionLength: 5,
+            breakLength: 3,
+            runningTime: 5,
             timeType: "session",
 
         }
@@ -16,10 +16,10 @@ class Tracker extends React.Component {
         this.subSessionTime = this.subSessionTime.bind(this);
         this.addBreakTime = this.addBreakTime.bind(this);
         this.subBreakTime = this.subBreakTime.bind(this);
+        this.pauseTimer = this.pauseTimer.bind(this);
+        this.dropTimer = this.dropTimer.bind(this);
     }
 
-    // timeType = "session";
-    //Add time to work session
     addSessionTime() {
         let newSessionLength = this.state.sessionLength + 1;
         this.setState({
@@ -27,7 +27,6 @@ class Tracker extends React.Component {
         })
     }
 
-    //Subtract time to worl session 
     subSessionTime() {
         let newSessionLength = this.state.sessionLength - 1;
         this.setState({
@@ -35,7 +34,6 @@ class Tracker extends React.Component {
         })
     }
 
-    //Add time to break
     addBreakTime() {
         let newBreakLength = this.state.breakLength + 1;
         this.setState({
@@ -43,7 +41,6 @@ class Tracker extends React.Component {
         })
     }
 
-    //Subtract time to break
     subBreakTime() {
         let newBreakLength = this.state.breakLength - 1;
         this.setState({
@@ -51,57 +48,96 @@ class Tracker extends React.Component {
         })
     }
 
-
-    // decreaseTime() {
-    //     while (this.state.workTime > 0) {
-    //         setTimeout(() => {
-    //             let newTime = this.state.workTime - 1;
-    //             console.log(newTime);
-    //             this.setState({
-    //                 workTime: newTime,
-    //             })
-    //         }, 1000)
-    //        break
-    //     }
-    // }
+    isTimerGo = false;
 
 
-    decreaseSession() {
-        this.setState({
-            runningTime: this.state.sessionLength,
-        });
-        this.startTimer();
+    decreaseSession(restart) {
+        console.log(this.isTimerGo)
+        if (this.isTimerGo === false) {
+            // if (restart === true) {
+            //     console.log("зашли в рестарт");
+            //     this.setState({
+            //         runningTime: this.state.sessionLength,
+
+            //     });
+            // }
+            this.isTimerGo = true;
+            this.startTimer();
+
+        } else {
+            if (restart) {
+                this.setState({
+                    runningTime: this.state.sessionLength,
+                });
+                this.startTimer();
+            }
+        }
+        // else {
+        // this.setState({
+        //     runningTime: this.state.sessionLength,
+        // });
+        // this.isTimerGo = true;
+        // this.startTimer();
+        // }
+
+        
 
     }
 
     decreaseBreak() {
+        console.log("началось уменьшение перерыва");
         this.setState({
             runningTime: this.state.breakLength,
+
         });
+        this.isTimerGo === true; //это вообще надо?
         this.startTimer();
     }
 
+
     startTimer() {
+        console.log("запустили таймер");
         setTimeout(() => {
-            if (this.state.runningTime > 0) {
-                let newTime = this.state.runningTime - 1;
-                this.setState({
-                    runningTime: newTime
-                });
-                this.startTimer()
-            } else {
-                let handler = this.switchTimeType();
-                console.log(handler);
-                handler();
+            console.log("kek");
+            if (this.isTimerGo === true) {
+                if (this.state.runningTime > 0) {
+                    let newTime = this.state.runningTime - 1;
+                    this.setState({
+                        runningTime: newTime
+                    });
+                    this.startTimer();
+                } else {
+                    let handler = this.switchTimeType();
+
+                    handler(true);
+                }
+
             }
         }, 1000)
+    }
 
+    pauseTimer() {
+        if (this.isTimerGo === true) {
+
+            this.isTimerGo = false;
+        } else {
+
+            this.isTimerGo = true;
+            this.startTimer();
+        }
+    }
+
+    dropTimer() {
+        this.isTimerGo = false;
+        this.setState({
+            runningTime: this.state.sessionLength,
+        })
     }
 
     switchTimeType() {
-        this.state.timeType === "session" ? this.setState({timeType:"break" }): this.setState({timeType:"session" });
+        console.log("начали смену типа времени")
+        this.state.timeType === "session" ? this.setState({ timeType: "break" }) : this.setState({ timeType: "session" });
         console.log(this.state.timeType);
-        // this.timeType = newTimeType;
         const handlerMap = {
             "session": this.decreaseSession,
             "break": this.decreaseBreak,
@@ -115,10 +151,10 @@ class Tracker extends React.Component {
         return (
             <div class="container-fluid main__container">
                 <div class="row session-label__row">
-                    <div class="col-3 label" id="session-label">Session Length</div>
+                    <div class="col-md-3 col-12 label" id="session-label">Session Length</div>
                 </div>
                 <div class="row session-settings__row settings__row">
-                    <div class="col-3 session-settings settings">
+                    <div class="col-md-3 col-12 session-settings settings">
                         <div class="session-settings__btn main-btn" onClick={this.addSessionTime}>
                             <i class="fas fa-plus"></i>
                         </div>
@@ -131,10 +167,10 @@ class Tracker extends React.Component {
                     </div>
                 </div>
                 <div class="row break-label__row">
-                    <div class="col-3 label" id="break-label">Break Length</div>
+                    <div class="col-md-3 col-12 label" id="break-label">Break Length</div>
                 </div>
                 <div class="row breack-settings__row settings__row">
-                    <div class="col-3 breack-settings settings">
+                    <div class="col-md-3 col-12 breack-settings settings">
                         <div class="breack-settings__btn main-btn" onClick={this.addBreakTime}>
                             <i class="fas fa-plus"></i>
                         </div>
@@ -147,19 +183,19 @@ class Tracker extends React.Component {
                     </div>
                 </div>
                 <div class="row main-time__row justify-content-center">
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-12 main-time__col" onClick={this.decreaseSession}>
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-12 main-time__col">
                         {this.state.runningTime}
                     </div>
                 </div>
                 <div class="row play-btns__row justify-content-center">
                     <div class="col-xl-4 col-lg-4 col-md-6 col-12  play-btns__col">
-                        <div class="play-btns__play main-btn">
+                        <div class="play-btns__play main-btn" onClick={this.decreaseSession}>
                             <i class="fas fa-play"></i>
                         </div>
-                        <div class="play-btns__pause main-btn">
-                            <i class="fas fa-pause"></i>
+                        <div class="play-btns__pause main-btn" onClick={this.pauseTimer}>
+                            <i class="fas fa-pause" ></i>
                         </div>
-                        <div class="play-btns__stop main-btn">
+                        <div class="play-btns__stop main-btn" onClick={this.dropTimer}>
                             <i class="fas fa-stop"></i>
                         </div>
                     </div>

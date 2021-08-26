@@ -22,6 +22,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var Tracker = /*#__PURE__*/function (_React$Component) {
   _inherits(Tracker, _React$Component);
 
@@ -33,10 +35,13 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
     _classCallCheck(this, Tracker);
 
     _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "isTimerGo", false);
+
     _this.state = {
-      sessionLength: 10,
-      breakLength: 5,
-      runningTime: 10,
+      sessionLength: 5,
+      breakLength: 3,
+      runningTime: 5,
       timeType: "session"
     };
     _this.decreaseSession = _this.decreaseSession.bind(_assertThisInitialized(_this));
@@ -47,10 +52,10 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
     _this.subSessionTime = _this.subSessionTime.bind(_assertThisInitialized(_this));
     _this.addBreakTime = _this.addBreakTime.bind(_assertThisInitialized(_this));
     _this.subBreakTime = _this.subBreakTime.bind(_assertThisInitialized(_this));
+    _this.pauseTimer = _this.pauseTimer.bind(_assertThisInitialized(_this));
+    _this.dropTimer = _this.dropTimer.bind(_assertThisInitialized(_this));
     return _this;
-  } // timeType = "session";
-  //Add time to work session
-
+  }
 
   _createClass(Tracker, [{
     key: "addSessionTime",
@@ -59,8 +64,7 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
       this.setState({
         sessionLength: newSessionLength
       });
-    } //Subtract time to worl session 
-
+    }
   }, {
     key: "subSessionTime",
     value: function subSessionTime() {
@@ -68,8 +72,7 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
       this.setState({
         sessionLength: newSessionLength
       });
-    } //Add time to break
-
+    }
   }, {
     key: "addBreakTime",
     value: function addBreakTime() {
@@ -77,8 +80,7 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
       this.setState({
         breackLength: newBreakLength
       });
-    } //Subtract time to break
-
+    }
   }, {
     key: "subBreakTime",
     value: function subBreakTime() {
@@ -86,33 +88,46 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
       this.setState({
         breackLength: newBreakLength
       });
-    } // decreaseTime() {
-    //     while (this.state.workTime > 0) {
-    //         setTimeout(() => {
-    //             let newTime = this.state.workTime - 1;
-    //             console.log(newTime);
-    //             this.setState({
-    //                 workTime: newTime,
-    //             })
-    //         }, 1000)
-    //        break
-    //     }
-    // }
-
+    }
   }, {
     key: "decreaseSession",
-    value: function decreaseSession() {
-      this.setState({
-        runningTime: this.state.sessionLength
-      });
-      this.startTimer();
+    value: function decreaseSession(restart) {
+      console.log(this.isTimerGo);
+
+      if (this.isTimerGo === false) {
+        // if (restart === true) {
+        //     console.log("зашли в рестарт");
+        //     this.setState({
+        //         runningTime: this.state.sessionLength,
+        //     });
+        // }
+        this.isTimerGo = true;
+        this.startTimer();
+      } else {
+        if (restart) {
+          this.setState({
+            runningTime: this.state.sessionLength
+          });
+          this.startTimer();
+        }
+      } // else {
+      // this.setState({
+      //     runningTime: this.state.sessionLength,
+      // });
+      // this.isTimerGo = true;
+      // this.startTimer();
+      // }
+
     }
   }, {
     key: "decreaseBreak",
     value: function decreaseBreak() {
+      console.log("началось уменьшение перерыва");
       this.setState({
         runningTime: this.state.breakLength
       });
+      this.isTimerGo === true; //это вообще надо?
+
       this.startTimer();
     }
   }, {
@@ -120,33 +135,55 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
     value: function startTimer() {
       var _this2 = this;
 
+      console.log("запустили таймер");
       setTimeout(function () {
-        if (_this2.state.runningTime > 0) {
-          var newTime = _this2.state.runningTime - 1;
+        console.log("kek");
 
-          _this2.setState({
-            runningTime: newTime
-          });
+        if (_this2.isTimerGo === true) {
+          if (_this2.state.runningTime > 0) {
+            var newTime = _this2.state.runningTime - 1;
 
-          _this2.startTimer();
-        } else {
-          var handler = _this2.switchTimeType();
+            _this2.setState({
+              runningTime: newTime
+            });
 
-          console.log(handler);
-          handler();
+            _this2.startTimer();
+          } else {
+            var handler = _this2.switchTimeType();
+
+            handler(true);
+          }
         }
       }, 1000);
     }
   }, {
+    key: "pauseTimer",
+    value: function pauseTimer() {
+      if (this.isTimerGo === true) {
+        this.isTimerGo = false;
+      } else {
+        this.isTimerGo = true;
+        this.startTimer();
+      }
+    }
+  }, {
+    key: "dropTimer",
+    value: function dropTimer() {
+      this.isTimerGo = false;
+      this.setState({
+        runningTime: this.state.sessionLength
+      });
+    }
+  }, {
     key: "switchTimeType",
     value: function switchTimeType() {
+      console.log("начали смену типа времени");
       this.state.timeType === "session" ? this.setState({
         timeType: "break"
       }) : this.setState({
         timeType: "session"
       });
-      console.log(this.state.timeType); // this.timeType = newTimeType;
-
+      console.log(this.state.timeType);
       var handlerMap = {
         "session": this.decreaseSession,
         "break": this.decreaseBreak
@@ -161,12 +198,12 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/React.createElement("div", {
         "class": "row session-label__row"
       }, /*#__PURE__*/React.createElement("div", {
-        "class": "col-3 label",
+        "class": "col-md-3 col-12 label",
         id: "session-label"
       }, "Session Length")), /*#__PURE__*/React.createElement("div", {
         "class": "row session-settings__row settings__row"
       }, /*#__PURE__*/React.createElement("div", {
-        "class": "col-3 session-settings settings"
+        "class": "col-md-3 col-12 session-settings settings"
       }, /*#__PURE__*/React.createElement("div", {
         "class": "session-settings__btn main-btn",
         onClick: this.addSessionTime
@@ -183,12 +220,12 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
       })))), /*#__PURE__*/React.createElement("div", {
         "class": "row break-label__row"
       }, /*#__PURE__*/React.createElement("div", {
-        "class": "col-3 label",
+        "class": "col-md-3 col-12 label",
         id: "break-label"
       }, "Break Length")), /*#__PURE__*/React.createElement("div", {
         "class": "row breack-settings__row settings__row"
       }, /*#__PURE__*/React.createElement("div", {
-        "class": "col-3 breack-settings settings"
+        "class": "col-md-3 col-12 breack-settings settings"
       }, /*#__PURE__*/React.createElement("div", {
         "class": "breack-settings__btn main-btn",
         onClick: this.addBreakTime
@@ -205,22 +242,24 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
       })))), /*#__PURE__*/React.createElement("div", {
         "class": "row main-time__row justify-content-center"
       }, /*#__PURE__*/React.createElement("div", {
-        "class": "col-xl-4 col-lg-4 col-md-6 col-12 main-time__col",
-        onClick: this.decreaseSession
+        "class": "col-xl-4 col-lg-4 col-md-6 col-12 main-time__col"
       }, this.state.runningTime)), /*#__PURE__*/React.createElement("div", {
         "class": "row play-btns__row justify-content-center"
       }, /*#__PURE__*/React.createElement("div", {
         "class": "col-xl-4 col-lg-4 col-md-6 col-12  play-btns__col"
       }, /*#__PURE__*/React.createElement("div", {
-        "class": "play-btns__play main-btn"
+        "class": "play-btns__play main-btn",
+        onClick: this.decreaseSession
       }, /*#__PURE__*/React.createElement("i", {
         "class": "fas fa-play"
       })), /*#__PURE__*/React.createElement("div", {
-        "class": "play-btns__pause main-btn"
+        "class": "play-btns__pause main-btn",
+        onClick: this.pauseTimer
       }, /*#__PURE__*/React.createElement("i", {
         "class": "fas fa-pause"
       })), /*#__PURE__*/React.createElement("div", {
-        "class": "play-btns__stop main-btn"
+        "class": "play-btns__stop main-btn",
+        onClick: this.dropTimer
       }, /*#__PURE__*/React.createElement("i", {
         "class": "fas fa-stop"
       })))));
