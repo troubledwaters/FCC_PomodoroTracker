@@ -78,7 +78,7 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
     value: function addBreakTime() {
       var newBreakLength = this.state.breakLength + 1;
       this.setState({
-        breackLength: newBreakLength
+        breakLength: newBreakLength
       });
     }
   }, {
@@ -86,21 +86,13 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
     value: function subBreakTime() {
       var newBreakLength = this.state.breakLength - 1;
       this.setState({
-        breackLength: newBreakLength
+        breakLength: newBreakLength
       });
     }
   }, {
     key: "decreaseSession",
     value: function decreaseSession(restart) {
-      console.log(this.isTimerGo);
-
       if (this.isTimerGo === false) {
-        // if (restart === true) {
-        //     console.log("зашли в рестарт");
-        //     this.setState({
-        //         runningTime: this.state.sessionLength,
-        //     });
-        // }
         this.isTimerGo = true;
         this.startTimer();
       } else {
@@ -110,19 +102,11 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
           });
           this.startTimer();
         }
-      } // else {
-      // this.setState({
-      //     runningTime: this.state.sessionLength,
-      // });
-      // this.isTimerGo = true;
-      // this.startTimer();
-      // }
-
+      }
     }
   }, {
     key: "decreaseBreak",
     value: function decreaseBreak() {
-      console.log("началось уменьшение перерыва");
       this.setState({
         runningTime: this.state.breakLength
       });
@@ -177,13 +161,11 @@ var Tracker = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "switchTimeType",
     value: function switchTimeType() {
-      console.log("начали смену типа времени");
       this.state.timeType === "session" ? this.setState({
         timeType: "break"
       }) : this.setState({
         timeType: "session"
       });
-      console.log(this.state.timeType);
       var handlerMap = {
         "session": this.decreaseSession,
         "break": this.decreaseBreak

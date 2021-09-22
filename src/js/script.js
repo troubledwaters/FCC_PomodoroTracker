@@ -37,14 +37,14 @@ class Tracker extends React.Component {
     addBreakTime() {
         let newBreakLength = this.state.breakLength + 1;
         this.setState({
-            breackLength: newBreakLength
+            breakLength: newBreakLength
         })
     }
 
     subBreakTime() {
         let newBreakLength = this.state.breakLength - 1;
         this.setState({
-            breackLength: newBreakLength
+            breakLength: newBreakLength
         })
     }
 
@@ -52,15 +52,7 @@ class Tracker extends React.Component {
 
 
     decreaseSession(restart) {
-        console.log(this.isTimerGo)
         if (this.isTimerGo === false) {
-            // if (restart === true) {
-            //     console.log("зашли в рестарт");
-            //     this.setState({
-            //         runningTime: this.state.sessionLength,
-
-            //     });
-            // }
             this.isTimerGo = true;
             this.startTimer();
 
@@ -72,20 +64,9 @@ class Tracker extends React.Component {
                 this.startTimer();
             }
         }
-        // else {
-        // this.setState({
-        //     runningTime: this.state.sessionLength,
-        // });
-        // this.isTimerGo = true;
-        // this.startTimer();
-        // }
-
-        
-
     }
 
     decreaseBreak() {
-        console.log("началось уменьшение перерыва");
         this.setState({
             runningTime: this.state.breakLength,
 
@@ -135,9 +116,7 @@ class Tracker extends React.Component {
     }
 
     switchTimeType() {
-        console.log("начали смену типа времени")
         this.state.timeType === "session" ? this.setState({ timeType: "break" }) : this.setState({ timeType: "session" });
-        console.log(this.state.timeType);
         const handlerMap = {
             "session": this.decreaseSession,
             "break": this.decreaseBreak,
